@@ -29,11 +29,11 @@ with open("/Users/lizhengyang/Desktop/Study in unimelb/2020 S1/COMP90024 CCC/Tin
     load = json.load(f)
     # print(load)
 
-# for line in load['rows']:
-# 	text = line['doc']['text']
-# 	language = line['doc']['metadata']['iso_language_code']
-# 	if language != "" and text:
-# 		print(language,' - ',text)
+for line in load['rows']:
+	text = line['doc']['text']
+	language = line['doc']['metadata']['iso_language_code']
+	if language != "" and text:
+		print(language,' - ',text)
 		
 print(json.dumps(load['rows'][2],indent=4))
 
