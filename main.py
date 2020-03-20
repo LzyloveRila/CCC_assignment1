@@ -11,10 +11,6 @@ rank = comm.Get_rank()
 
 # print("I am process %d of %d.\n" % (rank, size))
 
-
-
-
-
 twitter_data = "TinyTwitter.json"
 
 def read_twitter_data():
@@ -87,15 +83,8 @@ def hashtag_frequency(data):
 if __name__ == '__main__':
     start_time = time.time()
     data = read_twitter_data()
-    if rank == 0:
-        data1 = data
-        print(data1)
-    else:
-        data1 = None
-    local_data = comm.scatter(data, root=0)
-    print('rank %d, got %s:' % (rank,local_data))
-    # top10_lang = language_frequency(data)
-    # top10_hashtags = hashtag_frequency(data)
-    # end_time = time.time()
-    # time_cost = end_time - start_time
-    # print("time_cost:",round(time_cost,4),"seconds")
+    top10_lang = language_frequency(data)
+    top10_hashtags = hashtag_frequency(data)
+    end_time = time.time()
+    time_cost = end_time - start_time
+    print("time_cost:",round(time_cost,4),"seconds")
