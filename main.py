@@ -1,5 +1,5 @@
 from mpi4py import MPI
-import numpy as np
+# import numpy as np
 
 import json
 import sys
@@ -29,23 +29,26 @@ twitter_data = "tinyTwitter.json"
 
 def read_twitter_data():
     with open(twitter_data, "r") as f:
-        data = json.load(f)
-    
+        text = f.read()
+        text = text[:-2]
+        text += "]}"
+        data = json.loads(text)
+
     return data
     
 
 def language_frequency():
-    pass
+    for line in load['rows']:
+        text = line['doc']['text']
+        language = line['doc']['metadata']['iso_language_code']
+        if language != "" and text:
+            print(language,' - ',text)
+            
+    print(json.dumps(load['rows'][2],indent=4))
+
 
 def hashtag_frequency():
     pass
 
-
-for line in load['rows']:
-	text = line['doc']['text']
-	language = line['doc']['metadata']['iso_language_code']
-	if language != "" and text:
-		print(language,' - ',text)
-		
-print(json.dumps(load['rows'][2],indent=4))
-
+data = read_twitter_data()
+print(data)
