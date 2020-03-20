@@ -53,10 +53,22 @@ def language_frequency(data):
     freq_rank = sorted(lang_freq.items(), key=lambda item: item[1],reverse=True)
     
     # print(freq_rank)
-    top_10 = freq_rank[:10]
-    print(top_10)
-    return top_10
     # print(json.dumps(data['rows'][2],indent=4))
+    top_10 = freq_rank[:10]
+    with open("./country_code.json",'r') as cc:
+        country_code = json.load(cc)
+        # print(country_code)
+
+    # print(top_10)
+    top_10_list = []
+    for item in top_10:
+        if item[0] in country_code.keys():
+            top_10_list.append(country_code[item[0]]+"("+item[0]+"), "+str(item[1]))
+        else:
+            top_10_list.append(item[0]+", "+str(item[1]))
+    print(top_10_list)
+
+    return top_10_list
 
 
 def hashtag_frequency():
@@ -72,6 +84,6 @@ def hashtag_frequency():
 
 if __name__ == '__main__':
     data = read_twitter_data()
-    hashtag_frequency()
-    language_frequency()
+    # hashtag_frequency()
+    top10_lang = language_frequency(data)
 
