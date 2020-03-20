@@ -71,19 +71,30 @@ def language_frequency(data):
     return top_10_list
 
 
-def hashtag_frequency():
-    data = read_twitter_data()
+def hashtag_frequency(data):
     rows = data["rows"]
+    hashtag_frequency = {}
 
+    # count frequency
     for row in rows:
         hashtags = row["doc"]["entities"]["hashtags"]
 
         for hashtag in hashtags:
-            print(hashtag["text"])
+            text = hashtag["text"].lower()
+
+            if text in hashtag_frequency:
+                hashtag_frequency[text] += 1
+            else:
+                hashtag_frequency[text] = 1
+
+    # sort by most used
+    top_hashtags = sorted(hashtag_frequency.items(), key=lambda item: item[1], reverse=True)[:10]
+    print(top_hashtags)
+
+    return top_hashtags
 
 
 if __name__ == '__main__':
     data = read_twitter_data()
-    # hashtag_frequency()
     top10_lang = language_frequency(data)
-
+    top10_hashtags = hashtag_frequency(data)
