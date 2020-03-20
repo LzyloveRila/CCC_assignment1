@@ -4,10 +4,10 @@ import numpy as np
 import json
 import sys
 
-size = MPI.COMM_WORLD.Get_size()
-rank = MPI.COMM_WORLD.Get_rank()
+# size = MPI.COMM_WORLD.Get_size()
+# rank = MPI.COMM_WORLD.Get_rank()
 
-print("Hello world! I am process %d of %d.\n" % (rank, size))
+# print("Hello world! I am process %d of %d.\n" % (rank, size))
 
 # from parutils import pprint
 # comm = MPI.COMM_WORLD
@@ -25,9 +25,21 @@ print("Hello world! I am process %d of %d.\n" % (rank, size))
 # comm.Bcast([A,MPI.DOUBLE])
 # print("[%02d] %s" % (comm.rank,A) 
 
-with open("/Users/lizhengyang/Desktop/Study in unimelb/2020 S1/COMP90024 CCC/TinyTwitter.json",'r') as f:
-    load = json.load(f)
-    # print(load)
+twitter_data = "tinyTwitter.json"
+
+def read_twitter_data():
+    with open(twitter_data, "r") as f:
+        data = json.load(f)
+    
+    return data
+    
+
+def language_frequency():
+    pass
+
+def hashtag_frequency():
+    pass
+
 
 for line in load['rows']:
 	text = line['doc']['text']
