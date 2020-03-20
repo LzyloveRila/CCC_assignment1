@@ -48,7 +48,16 @@ def language_frequency():
 
 
 def hashtag_frequency():
-    pass
+    data = read_twitter_data()
+    rows = data["rows"]
 
-data = read_twitter_data()
-print(data)
+    for row in rows:
+        hashtags = row["doc"]["entities"]["hashtags"]
+
+        for hashtag in hashtags:
+            print(hashtag["text"])
+
+
+if __name__ == '__main__':
+    hashtag_frequency()
+    language_frequency()
