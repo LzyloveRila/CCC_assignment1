@@ -25,7 +25,7 @@ import sys
 # comm.Bcast([A,MPI.DOUBLE])
 # print("[%02d] %s" % (comm.rank,A) 
 
-twitter_data = "tinyTwitter.json"
+twitter_data = "TinyTwitter.json"
 
 def read_twitter_data():
     with open(twitter_data, "r") as f:
@@ -37,18 +37,31 @@ def read_twitter_data():
     return data
     
 
-def language_frequency():
-    for line in load['rows']:
+def language_frequency(data):
+    lang_freq = {}
+ 
+    for line in data['rows']:
         text = line['doc']['text']
         language = line['doc']['metadata']['iso_language_code']
-        if language != "" and text:
-            print(language,' - ',text)
-            
-    print(json.dumps(load['rows'][2],indent=4))
+        if language != "":
+            if language in lang_freq.keys():
+                lang_freq[language] += 1
+            else: 
+                lang_freq[language] = 1
+
+    #sort the dictionary by Descending order 
+    freq_rank = sorted(lang_freq.items(), key=lambda item: item[1],reverse=True)
+    
+    # print(freq_rank)
+    top_10 = freq_rank[:10]
+    print(top_10)
+    return top_10
+    # print(json.dumps(data['rows'][2],indent=4))
 
 
 def hashtag_frequency():
     pass
 
 data = read_twitter_data()
-print(data)
+
+language_frequency(data)
