@@ -1,38 +1,31 @@
 from mpi4py import MPI
-# import numpy as np
-
 import json
 import sys
+import time
+from json.decoder import JSONDecodeError
 
-# size = MPI.COMM_WORLD.Get_size()
-# rank = MPI.COMM_WORLD.Get_rank()
 
-# print("Hello world! I am process %d of %d.\n" % (rank, size))
+comm = MPI.COMM_WORLD
+size = comm.Get_size()
+rank = comm.Get_rank()
 
-# from parutils import pprint
-# comm = MPI.COMM_WORLD
+# print("I am process %d of %d.\n" % (rank, size))
 
-# print("Running on %d cores" % comm.size)
 
-# comm.Barrier()
 
-# N = 5
-# if comm.rank == 0:
-# 	A = np.arange(N,dtype=np.float64)
-# else:
-# 	A = np.empty(N,dtype=np.float64)
 
-# comm.Bcast([A,MPI.DOUBLE])
-# print("[%02d] %s" % (comm.rank,A) 
 
 twitter_data = "TinyTwitter.json"
 
 def read_twitter_data():
     with open(twitter_data, "r") as f:
-        text = f.read()
-        text = text[:-2]
-        text += "]}"
-        data = json.loads(text)
+        try:
+            data = json.load(f)
+        except JSONDecodeError:
+            text = f.read()
+            text = text[:-2]
+            text += "]}"
+            data = json.loads(text)
 
     return data
     
@@ -40,6 +33,7 @@ def read_twitter_data():
 def language_frequency(data):
     lang_freq = {}
  
+    #count frequency
     for line in data['rows']:
         text = line['doc']['text']
         language = line['doc']['metadata']['iso_language_code']
@@ -51,15 +45,11 @@ def language_frequency(data):
 
     #sort the dictionary by Descending order 
     freq_rank = sorted(lang_freq.items(), key=lambda item: item[1],reverse=True)
-    
-    # print(freq_rank)
-    # print(json.dumps(data['rows'][2],indent=4))
     top_10 = freq_rank[:10]
     with open("./country_code.json",'r') as cc:
         country_code = json.load(cc)
-        # print(country_code)
 
-    # print(top_10)
+    #search country code to get country name
     top_10_list = []
     for item in top_10:
         if item[0] in country_code.keys():
@@ -95,6 +85,17 @@ def hashtag_frequency(data):
 
 
 if __name__ == '__main__':
+    start_time = time.time()
     data = read_twitter_data()
-    top10_lang = language_frequency(data)
-    top10_hashtags = hashtag_frequency(data)
+    if rank == 0:
+        data1 = data
+        print(data1)
+    else:
+        data1 = None
+    local_data = comm.scatter(data, root=0)
+    print('rank %d, got %s:' % (rank,local_data))
+    # top10_lang = language_frequency(data)
+    # top10_hashtags = hashtag_frequency(data)
+    # end_time = time.time()
+    # time_cost = end_time - start_time
+    # print("time_cost:",round(time_cost,4),"seconds")
