@@ -5,20 +5,20 @@ import time
 from json.decoder import JSONDecodeError
 
 
-comm = MPI.COMM_WORLD
-size = comm.Get_size()
-rank = comm.Get_rank()
+# comm = MPI.COMM_WORLD
+# size = comm.Get_size()
+# rank = comm.Get_rank()
 
 # print("I am process %d of %d.\n" % (rank, size))
 
-twitter_data = "TinyTwitter.json"
+twitter_data = "tinyTwitter.json"
 
 def read_twitter_data():
     with open(twitter_data, "r") as f:
+        text = f.read()
         try:
-            data = json.load(f)
+            data = json.loads(text)
         except JSONDecodeError:
-            text = f.read()
             text = text[:-2]
             text += "]}"
             data = json.loads(text)
@@ -40,8 +40,7 @@ def language_frequency(data):
                 lang_freq[language] = 1
 
     #sort the dictionary by Descending order 
-    freq_rank = sorted(lang_freq.items(), key=lambda item: item[1],reverse=True)
-    top_10 = freq_rank[:10]
+    top_10 = sorted(lang_freq.items(), key=lambda item: item[1],reverse=True)[:10]
     with open("./country_code.json",'r') as cc:
         country_code = json.load(cc)
 
@@ -83,8 +82,18 @@ def hashtag_frequency(data):
 if __name__ == '__main__':
     start_time = time.time()
     data = read_twitter_data()
+
+    # if rank == 0:
+    #     data1 = data
+    #     print(data1)
+    # else:
+    #     data1 = None
+    # local_data = comm.scatter(data, root=0)
+    # print('rank %d, got %s:' % (rank,local_data))
+
     top10_lang = language_frequency(data)
     top10_hashtags = hashtag_frequency(data)
+
     end_time = time.time()
     time_cost = end_time - start_time
     print("time_cost:",round(time_cost,4),"seconds")

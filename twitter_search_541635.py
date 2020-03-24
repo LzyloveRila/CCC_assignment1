@@ -144,8 +144,7 @@ def master_tweet_processor(comm, input_file, stype, squery):
     rank = comm.Get_rank()
     size = comm.Get_size()
 
-    occurences = process_tweets(rank, input_file,
-                                size, stype, squery)
+    occurences = process_tweets(rank, input_file, size, stype, squery)
     if size > 1:
       counts = marshall_tweets(comm)
       # Marshall that data
