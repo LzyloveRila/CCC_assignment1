@@ -22,6 +22,20 @@ def read_twitter_data():
 
     return data
 
+# def read_twitter_lines():
+#     with open(twitter_data, "r") as f:
+#         for i,line in enumerate(f):
+#             try:
+#                 line = line[:-2]
+#                 data = json.loads(line)
+#             except JSONDecodeError:
+#                 print(JSONDecodeError)
+#                 continue
+#             except Exception as e:
+#                 print(e)
+    
+#     return data
+
 def merge_dict(x, y):
     for k,v in x.items():
         if k in y.keys():
@@ -31,20 +45,43 @@ def merge_dict(x, y):
 
 def language_frequency(rank, processes):
     lang_freq = {}
-    data = read_twitter_data() 
+    # data = read_twitter_data()
 
-    try:
-        for i, line in enumerate(data['rows']):
+    with open(twitter_data, "r") as f:
+        for i,line in enumerate(f):
             if i%processes == rank:
-                text = line['doc']['text']
-                language = line['doc']['metadata']['iso_language_code']
-                if language != "":
-                    if language in lang_freq.keys():
-                        lang_freq[language] += 1
-                    else: 
-                        lang_freq[language] = 1
-    except:
-        print("could not read data in line")
+                try:
+                    line = line[:-2]
+                    line = json.loads(line)
+                except JSONDecodeError:
+                    print(JSONDecodeError)
+                    continue
+                except Exception as e:
+                    print(e)
+
+            # get a line now (data)
+                try:
+                    text = line['doc']['text']
+                    language = line['doc']['metadata']['iso_language_code']
+                    if language != "":
+                        if language in lang_freq.keys():
+                            lang_freq[language] += 1
+                        else: 
+                            lang_freq[language] = 1
+                except:
+                    print("could not interpret json")
+    # try:
+    #     for i, line in enumerate(data['rows']):
+    #         if i%processes == rank:
+    #             text = line['doc']['text']
+    #             language = line['doc']['metadata']['iso_language_code']
+                # if language != "":
+                #     if language in lang_freq.keys():
+                #         lang_freq[language] += 1
+                #     else: 
+                #         lang_freq[language] = 1
+    # except:
+    #     print("could not read data in line")
     # print(lang_freq)
 
     return lang_freq           
