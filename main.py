@@ -15,16 +15,28 @@ twitter_data = "tinyTwitter.json"
 
 def read_twitter_data():
     with open(twitter_data, "r") as f:
-        text = f.read()
-        try:
-            data = json.loads(text)
-        except JSONDecodeError:
-            text = text[:-2]
-            text += "]}"
-            data = json.loads(text)
+        for i,line in enumerate(f):
+            try:
+                line = line[:-2]
+                data = json.loads(line)
+            except JSONDecodeError:
+                print(JSONDecodeError)
+                continue
+            except Exception as e:
+                print(e)
 
-    return data
-    
+            # do something with each line
+
+    # with open(twitter_data, "r") as f:
+    #     text = f.read()
+    #     try:
+    #         data = json.loads(text)
+    #     except JSONDecodeError:
+    #         text = text[:-2]
+    #         text += "]}"
+    #         data = json.loads(text)
+
+    return data  
 
 def language_frequency(data):
     lang_freq = {}

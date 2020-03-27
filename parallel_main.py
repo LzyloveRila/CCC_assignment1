@@ -91,15 +91,15 @@ def master_tweet_processor(comm):
     lang_freq = language_frequency(rank, size)
     print("master:", lang_freq)
     hashtag_freq = hashtag_frequency(rank, size)
+    top_10_lang = []
 
     if size > 1:
         top_10_lang = marshall_freq(comm, lang_freq)
 
         for i in range(size-1):
             comm.send('exit', dest=(i+1), tag=(i+1))
-
+    
     print("total: ", top_10_lang)
-
 
 def slave_tweet_processor(comm):
     # process all relevant tweets and send our counts back
