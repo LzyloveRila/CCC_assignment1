@@ -6,7 +6,7 @@ import time
 from json.decoder import JSONDecodeError
 
 # Constants
-twitter_data = "tinyTwitter.json"
+twitter_data = "smallTwitter.json"
 MASTER_RANK = 0
 
 def read_twitter_data():

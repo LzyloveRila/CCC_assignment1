@@ -1,0 +1,41 @@
+--------------------------------------------------------------------------
+No OpenFabrics connection schemes reported that they were able to be
+used on a specific port.  As such, the openib BTL (OpenFabrics
+support) will be disabled for this port.
+
+  Local host:           spartan-bm028
+  Local device:         mlx5_bond_0
+  Local port:           1
+  CPCs attempted:       rdmacm
+--------------------------------------------------------------------------
+[spartan-bm028.hpc.unimelb.edu.au:32664] pml_ucx.c:223 Error: UCP worker does not support MPI_THREAD_MULTIPLE
+[spartan-bm028.hpc.unimelb.edu.au:32663] pml_ucx.c:223 Error: UCP worker does not support MPI_THREAD_MULTIPLE
+[spartan-bm028.hpc.unimelb.edu.au:32661] pml_ucx.c:223 Error: UCP worker does not support MPI_THREAD_MULTIPLE
+[spartan-bm028.hpc.unimelb.edu.au:32662] pml_ucx.c:223 Error: UCP worker does not support MPI_THREAD_MULTIPLE
+--------------------------------
+I am slave process 2 of 4.
+
+--------------------------------
+I am slave process 3 of 4.
+
+--------------------------------
+I am master process 0 of 4.
+
+--------------------------------
+I am slave process 1 of 4.
+
+<class 'json.decoder.JSONDecodeError'>
+[spartan-bm028.hpc.unimelb.edu.au:32656] 3 more processes have sent help message help-mpi-btl-openib-cpc-base.txt / no cpcs for port
+[spartan-bm028.hpc.unimelb.edu.au:32656] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
+<class 'json.decoder.JSONDecodeError'>
+<class 'json.decoder.JSONDecodeError'>
+master: {'en': 776636, 'und': 62881, 'cy': 419, 'pt': 31425, 'nl': 790, 'tl': 11139, 'fa': 4729, 'zh': 5247, 'es': 18624, 'th': 33695, 'fr': 9491, 'ar': 6152, 'ja': 12665, 'de': 1114, 'ko': 4702, 'hu': 238, 'ru': 2322, 'in': 10450, 'tr': 4289, 'pl': 1073, 'ca': 476, 'it': 1712, 'eu': 350, 'iw': 104, 'ht': 1093, 'et': 1592, 'da': 397, 'ur': 1057, 'hi': 3877, 'cs': 173, 'fi': 272, 'ta': 447, 'ro': 328, 'ne': 749, 'sv': 331, 'lv': 164, 'lt': 1235, 'bn': 13, 'uk': 16, 'sl': 248, 'pa': 82, 'no': 542, 'vi': 213, 'is': 113, 'el': 448, 'si': 77, 'kn': 27, 'ml': 35, 'bg': 10, 'te': 40, 'sr': 41, 'gu': 9, 'mr': 21, 'am': 3, 'ps': 2, 'my': 1, 'ckb': 1}
+lang_freq {'es': 18322, 'en': 776242, 'und': 63445, 'fr': 9592, 'tl': 11089, 'ht': 1086, 'ja': 12624, 'ro': 283, 'pt': 31387, 'de': 1151, 'fa': 4721, 'ko': 4604, 'th': 33686, 'et': 1596, 'in': 10865, 'tr': 4286, 'lt': 1234, 'no': 501, 'ne': 735, 'ru': 2425, 'eu': 344, 'it': 1689, 'zh': 5226, 'ta': 418, 'ur': 1109, 'ar': 6030, 'nl': 756, 'pl': 1089, 'cs': 163, 'hi': 3932, 'bn': 9, 'fi': 253, 'da': 389, 'sv': 353, 'ca': 495, 'sl': 210, 'is': 118, 'vi': 193, 'cy': 375, 'lv': 161, 'hu': 233, 'el': 485, 'sr': 36, 'ml': 21, 'iw': 101, 'kn': 24, 'pa': 92, 'uk': 21, 'mr': 13, 'te': 46, 'bg': 16, 'si': 85, 'gu': 8, 'am': 3, 'my': 1, 'hy': 1, 'ps': 5, 'ckb': 1, 'lo': 1, 'sd': 1, 'or': 1}
+lang_freq {'en': 777377, 'in': 10369, 'und': 62932, 'et': 1574, 'tr': 4206, 'ja': 12408, 'ar': 6129, 'fr': 9426, 'tl': 11136, 'pt': 31511, 'th': 33494, 'es': 18502, 'ht': 1149, 'pl': 997, 'ko': 4671, 'sv': 358, 'ru': 2293, 'nl': 852, 'cy': 414, 'it': 1669, 'de': 1066, 'fa': 4738, 'zh': 5340, 'ne': 693, 'sl': 223, 'vi': 221, 'hi': 3988, 'no': 563, 'fi': 247, 'ur': 1115, 'cs': 182, 'ro': 307, 'ta': 441, 'is': 114, 'lv': 168, 'eu': 354, 'bg': 15, 'lt': 1166, 'da': 397, 'sr': 47, 'hu': 184, 'iw': 93, 'te': 36, 'el': 449, 'ca': 516, 'pa': 74, 'ml': 18, 'bn': 12, 'mr': 20, 'si': 73, 'uk': 18, 'kn': 16, 'gu': 15, 'am': 1, 'ckb': 1, 'ps': 1, 'lo': 1, 'or': 1}
+lang_freq {'en': 776860, 'und': 62859, 'fr': 9589, 'th': 33696, 'tl': 11196, 'pt': 31535, 'es': 18580, 'de': 1113, 'et': 1579, 'in': 10612, 'ar': 6190, 'ru': 2377, 'nl': 800, 'ja': 12232, 'it': 1693, 'ko': 4569, 'fa': 4790, 'eu': 350, 'zh': 5149, 'tr': 4398, 'fi': 245, 'ro': 292, 'lt': 1233, 'ne': 780, 'sv': 324, 'cs': 166, 'hi': 3950, 'vi': 235, 'ht': 1102, 'ca': 499, 'pa': 83, 'ur': 1053, 'ta': 398, 'cy': 391, 'no': 512, 'pl': 1064, 'da': 383, 'hu': 211, 'el': 428, 'lv': 183, 'ml': 31, 'is': 89, 'bn': 12, 'uk': 23, 'sl': 217, 'sr': 27, 'mr': 30, 'iw': 96, 'ps': 2, 'bg': 12, 'kn': 26, 'si': 74, 'gu': 13, 'te': 28, 'lo': 1}
+total:  ['English (default)(en), 3107115', 'und, 252117', 'Thai(th), 134571', 'Portuguese(pt), 125858', 'Spanish(es), 74028', 'Japanese(ja), 49929', 'tl, 44560', 'in, 42296', 'French(fr), 38098', 'Arabic(ar), 24501']
+time_cost: 201.5009 seconds
+
+real	3m21.953s
+user	12m51.298s
+sys	0m35.234s

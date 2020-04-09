@@ -11,7 +11,7 @@ from json.decoder import JSONDecodeError
 
 # print("I am process %d of %d.\n" % (rank, size))
 
-twitter_data = "tinyTwitter.json"
+twitter_data = "smallTwitter.json"
 
 def read_twitter_data():
     with open(twitter_data, "r") as f:
