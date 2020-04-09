@@ -14,29 +14,42 @@ from json.decoder import JSONDecodeError
 twitter_data = "smallTwitter.json"
 
 def read_twitter_data():
-    with open(twitter_data, "r") as f:
-        for i,line in enumerate(f):
-            try:
-                line = line[:-2]
-                data = json.loads(line)
-            except JSONDecodeError:
-                print(JSONDecodeError)
-                continue
-            except Exception as e:
-                print(e)
-
-            # do something with each line
-
     # with open(twitter_data, "r") as f:
-    #     text = f.read()
-    #     try:
-    #         data = json.loads(text)
-    #     except JSONDecodeError:
-    #         text = text[:-2]
-    #         text += "]}"
-    #         data = json.loads(text)
+    #     for i,line in enumerate(f):
+    #         try:
+    #             line = line[:-2]
+    #             data = json.loads(line)
+    #         except JSONDecodeError:
+    #             print(JSONDecodeError)
+    #             continue
+    #         except Exception as e:
+    #             print(e)
 
-    return data  
+    #         # do something with each line
+    # return data  
+    with open(twitter_data, "r") as f:
+        text = f.read()
+        try:
+            data = json.loads(text)
+        except JSONDecodeError:
+            text = text[:-2]
+            text += "]}"
+            data = json.loads(text)
+    return data
+    # try:
+    #     for i, line in enumerate(data['rows']):
+    #         if i%processes == rank:
+    #             text = line['doc']['text']
+    #             language = line['doc']['metadata']['iso_language_code']
+                # if language != "":
+                #     if language in lang_freq.keys():
+                #         lang_freq[language] += 1
+                #     else: 
+                #         lang_freq[language] = 1
+    # except:
+    #     print("could not read data in line")
+    # print(lang_freq)
+
 
 def language_frequency(data):
     lang_freq = {}
@@ -89,6 +102,8 @@ def hashtag_frequency(data):
     print(top_hashtags)
 
     return top_hashtags
+
+
 
 
 if __name__ == '__main__':
