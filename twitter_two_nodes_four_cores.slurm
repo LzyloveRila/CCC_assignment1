@@ -17,4 +17,4 @@
 module load Python/3.6.4-intel-2017.u2-GCC-6.2.0-CUDA9
 
 # Launch multiple process python code
-mpiexec -n 4 python3 parallel_main.py 
+mpiexec -n 8 python3 parallel_main.py 
