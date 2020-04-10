@@ -9,33 +9,6 @@ from json.decoder import JSONDecodeError
 twitter_data = "smallTwitter.json"
 MASTER_RANK = 0
 
-# def read_twitter_data():
-#     #load json data
-#     with open(twitter_data, "r") as f:
-#         text = f.read()
-#         try:
-#             data = json.loads(text)
-#         except JSONDecodeError:
-#             text = text[:-2]
-#             text += "]}"
-#             data = json.loads(text)
-
-#     return data
-
-# def read_twitter_lines():
-#     with open(twitter_data, "r") as f:
-#         for i,line in enumerate(f):
-#             try:
-#                 line = line[:-2]
-#                 data = json.loads(line)
-#             except JSONDecodeError:
-#                 print(JSONDecodeError)
-#                 continue
-#             except Exception as e:
-#                 print(e)
-    
-#     return data
-
 def merge_dict(x, y):
     for k,v in x.items():
         if k in y.keys():
@@ -82,37 +55,6 @@ def language_frequency(rank, processes):
 
     return lang_freq, hashtag_frequency          
 
-# def hashtag_frequency(rank, processes):
-#     hashtag_frequency = {}
-
-#     with open(twitter_data, "r") as f:
-#         for i,line in enumerate(f):
-#             if i%processes == rank:
-#                 try:
-#                     line = line[:-2]
-#                     line = json.loads(line)
-#                 except JSONDecodeError:
-#                     print("A line cannot be read ocurred, skip it")
-#                     continue
-#                 except Exception as e:
-#                     print(e)
-
-#                 try:
-#                     hashtags = line["doc"]["entities"]["hashtags"]
-#                     for hashtag in hashtags:
-#                         text = hashtag["text"].lower()
-
-#                         if text in hashtag_frequency:
-#                             hashtag_frequency[text] += 1
-#                         else:
-#                             hashtag_frequency[text] = 1
-#                 except:
-#                     print("could not interpret json")
-    
-#     return hashtag_frequency
-
-    
-
 def marshall_freq(comm, lang_freq, htag_freq):
     size = comm.Get_size()
     #send data request
@@ -152,8 +94,6 @@ def master_tweet_processor(comm):
     size = comm.Get_size()
 
     lang_freq, hashtag_frequency = language_frequency(rank, size)
-    # print("master:", lang_freq)
-    # hashtag_freq = hashtag_frequency(rank, size)
     top_10_lang = []
 
     if size > 1:
@@ -194,7 +134,6 @@ def slave_tweet_processor(comm):
         if isinstance(in_comm, str):
             if in_comm == "return_data":
                 #send back data
-                # print("lang_freq",lang_freq)
                 comm.send(data, dest=MASTER_RANK, tag=MASTER_RANK)
             elif in_comm in ("exit"):
                 exit(0)
@@ -212,8 +151,6 @@ def main():
         master_tweet_processor(comm)
     else:
     # slaves work on different part of data
-        # print("--------------------------------")
-        # print("I am slave process %d of %d.\n" % (rank, size))
         slave_tweet_processor(comm)
 
     end_time = time.time()
