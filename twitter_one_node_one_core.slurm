@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --ntasks=1
-#SBATCH --time=0-12:00:00
+#SBATCH --time=0-1:00:00
 #SBATCH --partition=physical
 
 # Send yourself an email when the job:
@@ -12,12 +12,7 @@
 #SBATCH --mail-type=END
 
 # Load required modules
-module load Python/3.7.3-spartan_gcc-8.1.0
+module load Python/3.6.4-intel-2017.u2-GCC-6.2.0-CUDA9
 
 # Launch multiple process python code
-echo "Testing"
-time mpiexec -n 1 python3 main.py 
-# echo "Searching for topics"
-# time mpiexec -n 1 python3 twitter_search_541635.py -i minitwitter.csv
-# echo "Searching for the keyword 'jumping'"
-# time mpiexec -n 1 python3 twitter_search_541635.py -i minitwitter.csv
+mpiexec -n 1 python3 parallel_main.py

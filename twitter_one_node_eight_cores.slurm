@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=8
-#SBATCH --time=0-12:00:00
+#SBATCH --time=0-1:00:00
 #SBATCH --partition=physical
 
 # Send yourself an email when the job:
@@ -13,7 +13,7 @@
 #SBATCH --mail-type=END
 
 # Load required modules
-module load Python/3.7.3-spartan_gcc-8.1.0
+module load Python/3.6.4-intel-2017.u2-GCC-6.2.0-CUDA9
 
 # Launch multiple process python code
-time mpiexec -n 4 python3 parallel_main.py 
+mpiexec -n 8 python3 parallel_main.py 
