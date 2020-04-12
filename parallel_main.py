@@ -1,4 +1,5 @@
 # Import MPI so we can run on more than one node and processor
+import functools
 import json
 import sys
 import time
@@ -9,6 +10,8 @@ from mpi4py import MPI
 # Constants
 twitter_data = "smallTwitter.json"
 MASTER_RANK = 0
+
+HORIZONTAL_LINE = "----------------------------------"
 
 
 def merge_dict(x, y):
@@ -118,17 +121,17 @@ def master_tweet_processor(comm):
             hashtag_frequency.items(), key=lambda item: item[1], reverse=True
         )[:10]
 
-    print("----------------------------------")
+    print(HORIZONTAL_LINE)
     print("-------top 10 language used-------")
-    print("----------------------------------")
+    print(HORIZONTAL_LINE)
     for i in range(len(top_10_lang)):
         print(i + 1, " : ", top_10_lang[i])
-    print("----------------------------------")
+    print(HORIZONTAL_LINE)
     print("--------top 10 hashtags-----------")
-    print("----------------------------------")
+    print(HORIZONTAL_LINE)
     for i in range(len(top_10_htag)):
         print(i + 1, " : ", top_10_htag[i][0], top_10_htag[i][1])
-    print("----------------------------------")
+    print(HORIZONTAL_LINE)
 
 
 def slave_tweet_processor(comm):
@@ -150,24 +153,35 @@ def slave_tweet_processor(comm):
                 exit(0)
 
 
+def timer(func):
+    """Print the runtime of the decorated function"""
+
+    @functools.wraps(func)
+    def wrapper_timer(*args, **kwargs):
+        started_at = time.perf_counter()
+        value = func(*args, **kwargs)
+        ended_at = time.perf_counter()
+        run_time = ended_at - started_at
+        print(f"Finished {func.__name__!r} in {run_time:.4f} seconds")
+        return value
+
+    return wrapper_timer
+
+
+@timer
 def main():
-    start_time = time.time()
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()
 
     if rank == 0:
         # one master to gather results
-        print("--------------------------------")
-        print("I am master process, total number of process is %d.\n" % (size))
+        print(HORIZONTAL_LINE)
+        print(f"I am master process, total number of process is {size}.")
         master_tweet_processor(comm)
     else:
         # slaves work on different part of data
         slave_tweet_processor(comm)
-
-    end_time = time.time()
-    time_cost = end_time - start_time
-    print("time_cost:", round(time_cost, 4), "seconds")
 
 
 if __name__ == "__main__":
