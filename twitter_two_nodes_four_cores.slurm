@@ -5,13 +5,10 @@
 #SBATCH --time=0-1:00:00
 #SBATCH --partition=physical
 
-# Send yourself an email when the job:
-# aborts abnormally (fails)
-#SBATCH --mail-type=FAIL
-# begins
-#SBATCH --mail-type=BEGIN
-# ends successfully
-#SBATCH --mail-type=END
+#SBATCH --job-name="process_twitter_1019332"
+#SBATCH --output=result_two_nodes_four_cores.out
+#SBATCH --mail-user=mkarimov@student.unimelb.edu.au
+#SBATCH --mail-type=ALL
 
 # Load required modules
 module load Python/3.6.4-intel-2017.u2-GCC-6.2.0-CUDA9
