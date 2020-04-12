@@ -8,9 +8,10 @@ from json.decoder import JSONDecodeError
 from mpi4py import MPI
 
 # Constants
-twitter_data = "smallTwitter.json"
-MASTER_RANK = 0
 
+DEFAULT_FILE = "smallTwitter.json"
+COUNTRY_CODE_FILE = "country_code.json"
+MASTER_RANK = 0
 HORIZONTAL_LINE = "----------------------------------"
 
 
@@ -22,11 +23,20 @@ def merge_dict(x, y):
             y[k] = v
 
 
-def language_frequency(rank, processes):
+def get_input_file(argv):
+    """Read input file name from arguments or return default one"""
+
+    if len(argv) > 0:
+        return argv[0]
+
+    return DEFAULT_FILE
+
+
+def tweet_processor(rank, processes, file):
     lang_freq = {}
     hashtag_frequency = {}
 
-    with open(twitter_data, "r") as f:
+    with open(file, "r") as f:
         for i, line in enumerate(f):
             if i % processes == rank:
                 try:
@@ -83,8 +93,8 @@ def marshall_freq(comm, lang_freq, htag_freq):
 
 
 def match_country(top_10):
-    with open("./country_code.json", "r") as cc:
-        country_code = json.load(cc)
+    with open(COUNTRY_CODE_FILE, "r") as f:
+        country_code = json.load(f)
 
     # search country code to get country name
     top_10_list = []
@@ -99,12 +109,12 @@ def match_country(top_10):
     return top_10_list
 
 
-def master_tweet_processor(comm):
+def master_tweet_processor(comm, file):
     # Read our tweets
     rank = comm.Get_rank()
     size = comm.Get_size()
 
-    lang_freq, hashtag_frequency = language_frequency(rank, size)
+    lang_freq, hashtag_frequency = tweet_processor(rank, size, file)
     top_10_lang = []
 
     if size > 1:
@@ -122,25 +132,25 @@ def master_tweet_processor(comm):
         )[:10]
 
     print(HORIZONTAL_LINE)
-    print("-------top 10 language used-------")
+    print("-------Top 10 Languages-------")
     print(HORIZONTAL_LINE)
     for i in range(len(top_10_lang)):
         print(i + 1, " : ", top_10_lang[i])
     print(HORIZONTAL_LINE)
-    print("--------top 10 hashtags-----------")
+    print("--------Top 10 Hashtags-----------")
     print(HORIZONTAL_LINE)
     for i in range(len(top_10_htag)):
         print(i + 1, " : ", top_10_htag[i][0], top_10_htag[i][1])
     print(HORIZONTAL_LINE)
 
 
-def slave_tweet_processor(comm):
+def slave_tweet_processor(comm, file):
     # process all relevant tweets and send our counts back
     # to master when asked
     rank = comm.Get_rank()
     size = comm.Get_size()
 
-    lang_freq, hashtag_frequency = language_frequency(rank, size)
+    lang_freq, hashtag_frequency = tweet_processor(rank, size, file)
     data = [lang_freq, hashtag_frequency]
     # start to listen from master
     while True:
@@ -169,20 +179,24 @@ def timer(func):
 
 
 @timer
-def main():
+def main(argv):
+    # Get input file to work on
+    input_file = get_input_file(argv)
+    # Identify processes' rank and size
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()
 
     if rank == 0:
-        # one master to gather results
+        # a master to gather results
         print(HORIZONTAL_LINE)
-        print(f"I am master process, total number of process is {size}.")
-        master_tweet_processor(comm)
+        print(f"I am master process, processing {input_file}")
+        print(f"Total number of processes is {size}.")
+        master_tweet_processor(comm, input_file)
     else:
         # slaves work on different part of data
-        slave_tweet_processor(comm)
+        slave_tweet_processor(comm, input_file)
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
