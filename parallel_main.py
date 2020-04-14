@@ -67,7 +67,7 @@ def print_top_hashtags(hashtags):
     print("--------Top 10 Hashtags-----------")
     print(HORIZONTAL_LINE)
     for index, hashtag in enumerate(hashtags, start=1):
-        print(f"{index} : #{hashtag[0]} {hashtag[1]}")
+        print(f"{index} : #{hashtag[0]}, {hashtag[1]}")
 
 
 def match_country(languages):
