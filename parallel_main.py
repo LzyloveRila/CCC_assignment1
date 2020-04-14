@@ -67,7 +67,7 @@ def print_top_hashtags(hashtags):
     print("--------Top 10 Hashtags-----------")
     print(HORIZONTAL_LINE)
     for index, hashtag in enumerate(hashtags, start=1):
-        print(f"{index} : {hashtag[0]} {hashtag[1]}")
+        print(f"{index} : #{hashtag[0]} {hashtag[1]}")
 
 
 def match_country(languages):
@@ -87,7 +87,7 @@ def match_country(languages):
     return top_languages
 
 
-def marshall_freq(comm, lang_freq, hashtag_frequency):
+def marshall_freq(comm, language_frequency, hashtag_frequency):
     size = comm.Get_size()
     # send data request
     for i in range(size - 1):
