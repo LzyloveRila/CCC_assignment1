@@ -70,24 +70,24 @@ def print_top_hashtags(hashtags):
         print(f"{index} : {hashtag[0]} {hashtag[1]}")
 
 
-def match_country(languages):
+def match_country(top_10):
     with open(COUNTRY_CODE_FILE, "r") as f:
         country_code = json.load(f)
 
     # search country code to get country name
-    top_languages = []
-    for item in languages:
+    top_10_list = []
+    for item in top_10:
         if item[0] in country_code.keys():
-            top_languages.append(
+            top_10_list.append(
                 country_code[item[0]] + "(" + item[0] + "), " + str(item[1])
             )
         else:
-            top_languages.append(item[0] + ", " + str(item[1]))
+            top_10_list.append(item[0] + ", " + str(item[1]))
 
-    return top_languages
+    return top_10_list
 
 
-def marshall_freq(comm, lang_freq, hashtag_frequency):
+def marshall_freq(comm, lang_freq, htag_freq):
     size = comm.Get_size()
     # send data request
     for i in range(size - 1):
@@ -96,20 +96,15 @@ def marshall_freq(comm, lang_freq, hashtag_frequency):
         # receive frequency count dict from slaves
         recv_dict_list = comm.recv(source=(i + 1), tag=MASTER_RANK)
         # marshall the data
-        merge_dict(recv_dict_list[0], language_frequency)
-        merge_dict(recv_dict_list[1], hashtag_frequency)
+        merge_dict(recv_dict_list[0], lang_freq)
+        merge_dict(recv_dict_list[1], htag_freq)
+    # sort the dictionary by Descending order
+    lang_freq = sorted(lang_freq.items(), key=lambda item: item[1], reverse=True)[:10]
+    top_10_htag = sorted(htag_freq.items(), key=lambda item: item[1], reverse=True)[:10]
 
-    # sort the dictionary by descending order
-    language_frequency = sorted(
-        language_frequency.items(), key=lambda item: item[1], reverse=True
-    )[:10]
-    top_hashtags = sorted(
-        hashtag_frequency.items(), key=lambda item: item[1], reverse=True
-    )[:10]
+    top_10_lang = match_country(lang_freq)
 
-    top_languages = match_country(language_frequency)
-
-    return top_languages, top_hashtags
+    return top_10_lang, top_10_htag
 
 
 def tweet_processor(rank, processes, file):
@@ -132,16 +127,19 @@ def tweet_processor(rank, processes, file):
                     text = line["doc"]["text"]
                     language = line["doc"]["metadata"]["iso_language_code"]
                     if language != "":
-                        language_occurences[language] = (
-                            language_occurences.setdefault(language, 0) + 1
-                        )
+                        if language in language_occurences.keys():
+                            language_occurences[language] += 1
+                        else:
+                            language_occurences[language] = 1
 
                     hashtags = line["doc"]["entities"]["hashtags"]
                     for h in hashtags:
                         hashtag = h["text"].lower()
-                        hashtag_occurences[hashtag] = (
-                            hashtag_occurences.setdefault(hashtag, 0) + 1
-                        )
+
+                        if hashtag in hashtag_occurences:
+                            hashtag_occurences[hashtag] += 1
+                        else:
+                            hashtag_occurences[hashtag] = 1
                 except:
                     print("Failed to process tweet.")
 
@@ -171,7 +169,6 @@ def master_tweet_processor(comm, file):
             hashtag_frequency.items(), key=lambda item: item[1], reverse=True
         )[:10]
 
-    # Print results
     print_top_languages(languages)
     print_top_hashtags(hashtags)
     print(HORIZONTAL_LINE)
