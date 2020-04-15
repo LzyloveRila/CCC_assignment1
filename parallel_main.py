@@ -54,20 +54,24 @@ def timer(func):
     return wrapper_timer
 
 
-def print_top_languages(languages):
-    print(HORIZONTAL_LINE)
-    print("-------Top 10 Languages-----------")
-    print(HORIZONTAL_LINE)
-    for index, language in enumerate(languages, start=1):
-        print(f"{index} : {language}")
-
-
 def print_top_hashtags(hashtags):
+    """Display top hashtags in nicely formatted way."""
+
     print(HORIZONTAL_LINE)
-    print("--------Top 10 Hashtags-----------")
+    print("--------TOP 10 HASHTAGS-----------")
     print(HORIZONTAL_LINE)
     for index, hashtag in enumerate(hashtags, start=1):
         print(f"{index} : #{hashtag[0]}, {hashtag[1]}")
+
+
+def print_top_languages(languages):
+    """Display top languages in nicely formatted way."""
+
+    print(HORIZONTAL_LINE)
+    print("-------TOP 10 LANGUAGES-----------")
+    print(HORIZONTAL_LINE)
+    for index, language in enumerate(languages, start=1):
+        print(f"{index} : {language}")
 
 
 def match_country(languages):
@@ -149,7 +153,6 @@ def tweet_processor(rank, processes, file):
 
 
 def master_tweet_processor(comm, file):
-    # Read tweets
     rank = comm.Get_rank()
     size = comm.Get_size()
 
@@ -206,13 +209,13 @@ def main(argv):
     size = comm.Get_size()
 
     if rank == 0:
-        # a master to gather results
+        # Master process enters here.
         print(HORIZONTAL_LINE)
-        print(f"I am master process, processing {input_file}")
+        print(f"Master process started processing {input_file}.")
         print(f"Total number of processes is {size}.")
         master_tweet_processor(comm, input_file)
     else:
-        # slaves work on different part of data
+        # Slaves processes comes here.
         slave_tweet_processor(comm, input_file)
 
 
