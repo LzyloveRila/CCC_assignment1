@@ -1,0 +1,34 @@
+A line cannot be read ocurred, skip it
+A line cannot be read ocurred, skip it
+--------------------------------
+I am master process, total number of process is 8.
+
+A line cannot be read ocurred, skip it
+----------------------------------
+-------top 10 language used-------
+----------------------------------
+1  :  English (default)(en), 3107115
+2  :  und, 252117
+3  :  Thai(th), 134571
+4  :  Portuguese(pt), 125858
+5  :  Spanish(es), 74028
+6  :  Japanese(ja), 49929
+7  :  tl, 44560
+8  :  in, 42296
+9  :  French(fr), 38098
+10  :  Arabic(ar), 24501
+----------------------------------
+--------top 10 hashtags-----------
+----------------------------------
+1  :  auspol 19878
+2  :  coronavirus 10110
+3  :  มาพ่องเพิ่งอะไร 7531
+4  :  firefightaustralia 6812
+5  :  oldme 6418
+6  :  sydney 6196
+7  :  scottyfrommarketing 5185
+8  :  grammys 5085
+9  :  assange 4689
+10  :  sportsrorts 4516
+----------------------------------
+time_cost: 122.4885 seconds
